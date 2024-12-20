@@ -23,6 +23,7 @@ conda activate owlore
 conda install mpi4py
 bash install.sh
 pip install peft
+pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.4.2/flash_attn-2.4.2+cu118torch2.0cxx11abiTRUE-cp39-cp39-linux_x86_64.whl
 ```
 
 ### Prepare Dataset
@@ -45,7 +46,7 @@ The script will run LISA on the `Commonsense Reasoning` dataset.
 bash owlore_scripts/run_lisa.sh merge # LISA
 ```
 The script will run OwLore on the `Commonsense Reasoning` dataset.
-```bash
+```bashore
 bash owlore_scripts/run_owlore_low_rank.sh merge # OwLore
 ```
 

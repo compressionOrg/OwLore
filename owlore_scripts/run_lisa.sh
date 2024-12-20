@@ -1,4 +1,4 @@
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=1
 
 lisa_activated_layers=2
 MODE=uniform
@@ -7,9 +7,10 @@ seed=111
 interval=3
 learning_rate=3e-4
 
-MODEL_PATH="/llama2-7b"
+
+MODEL_PATH="meta-llama/Llama-2-7b-hf"
 DATASET_PATH="data/${data_dir}"
-OUTPUT_MODEL_PATH="/output_models/finetuned_llama2_${MODE}_${data_dir}_seed_${seed}_inter${interval}_${learning_rate}_${lisa_activated_layers}"
+OUTPUT_MODEL_PATH="./output_models/finetuned_llama2_${MODE}_${data_dir}_seed_${seed}_inter${interval}_${learning_rate}_${lisa_activated_layers}"
 
 ./scripts/run_finetune_with_lisa.sh \
   --model_name_or_path ${MODEL_PATH} \
