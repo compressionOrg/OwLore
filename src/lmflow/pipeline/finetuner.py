@@ -30,7 +30,7 @@ from transformers.trainer_callback import (
 from lmflow.datasets.dataset import Dataset
 from lmflow.pipeline.base_tuner import BaseTuner
 from lmflow.pipeline.utils.peft_trainer import PeftTrainer, PeftSavingCallback
-
+from pdb import set_trace as st
 
 logger = logging.getLogger(__name__)
 
@@ -352,18 +352,25 @@ class Finetuner(BaseTuner):
                         layer_probabilities = probabilities / np.sum(probabilities)
                     if self.prob_mode == 'uniform':
                         layer_probabilities = None
-                    if self.prob_mode == 'owl' or self.prob_mode == 'owl_reverse' or self.prob_mode == 'norm':
+                    if self.prob_mode == 'owl' or self.prob_mode == 'owl_reverse' or self.prob_mode == 'norm' or self.prob_mode == 'dlp' or self.prob_mode == 'dlp2':
                         # load metric
                         importance_scores = []
                         if self.prob_mode == 'norm':
                             with open('metric_cache/weight_norm.txt', 'r') as f:
                                 for line in f.readlines():
                                     importance_scores.append(float(line.strip()))
-                        else:
-                            with open('metric_cache/llama2_ratio_13.txt', 'r') as f:
+                        elif self.prob_mode == 'owl' or self.prob_mode == 'owl_reverse':
+                            with open('metric_cache/llama2_7b_ratio_13.txt', 'r') as f:
                                 for line in f.readlines():
                                     importance_scores.append(float(line.strip()))
-
+                        elif self.prob_mode == 'dlp':
+                            with open('metric_cache/llama2_7b_ratio_dlp.txt', 'r') as f:
+                                for line in f.readlines():
+                                    importance_scores.append(float(line.strip()))
+                        elif self.prob_mode == 'dlp2':
+                            with open('metric_cache/llama2_7b_ratio_dlp2.txt', 'r') as f:
+                                for line in f.readlines():
+                                    importance_scores.append(float(line.strip()))
                         # extract the importance metrics for each layer and compute their average values
                         layer_scores = {}
                         layer_id = 0
@@ -394,6 +401,7 @@ class Finetuner(BaseTuner):
 
                         print("Layer selection probabilities:")
                         print(layer_probabilities)
+                    # st()
                     self.active_layers_indices = np.random.choice(range(self.total_layers), self.n_layers, replace=False, p=layer_probabilities)
                     print(f"Activating layers at indices: {self.active_layers_indices} for the next steps.", flush=True)
 
